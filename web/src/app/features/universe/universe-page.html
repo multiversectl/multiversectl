@@ -6,7 +6,7 @@
 @if (u(); as u) {
   <header class="head">
     <div class="who">
-      <h1 class="numeral" [class.word]="!isNumber(u.name)" [class.live]="u.running">{{ u.name }}</h1>
+      <h1 class="numeral" [class.word]="!isNumber(u.name)" [class.live]="u.running"><mv-ring class="ring" [colours]="store.ring()" [dim]="!u.running" />{{ u.name }}</h1>
       <div class="row state">
         <mv-badge [tone]="u.running ? 'ok' : 'mute'">
           @if (u.running) { <span class="dot ok"></span> {{ u.running }}@if (store.expected()) {/{{ store.expected() }}} running }

@@ -1,24 +1,28 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { LocView } from '../../core/models';
 import { branchUrlOf, webUrlOf } from '../../core/util';
+import { Gem } from './gem';
 import { Icon } from './icon';
 
 /**
- * A repository, as its path without the host (owner/repo), in the colour of the
- * platform it is on; a link to it when it is on the web. With a branch it is that
+ * A repository, as its path without the host (owner/repo), with its gem when
+ * its multiverse's list is known (the colour herdr's panel shows it in too),
+ * else its platform's mark; a link to it when it is on the web. With a branch it is that
  * branch's page: the chip is the repository, or one of its branches.
  */
+const PLATFORM: Record<string, string> = { github: 'GitHub', gitlab: 'GitLab', git: 'a git server', file: 'this machine' };
+
 @Component({
   selector: 'mv-repo-chip',
-  imports: [Icon],
+  imports: [Icon, Gem],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (href(); as url) {
       <a class="chip" [class]="kind()" [href]="url" target="_blank" rel="noopener noreferrer" [attr.title]="title()">
-        <mv-icon [name]="icon()" /><span class="txt">{{ text() }}</span>
+        @if (gem() && !isBranch()) { <mv-gem [colour]="gem()" /> } @else { <mv-icon [name]="icon()" /> }<span class="txt">{{ text() }}</span>
       </a>
     } @else {
-      <span class="chip" [class]="kind()" [attr.title]="title()"><mv-icon [name]="icon()" /><span class="txt">{{ text() }}</span></span>
+      <span class="chip" [class]="kind()" [attr.title]="title()">@if (gem() && !isBranch()) { <mv-gem [colour]="gem()" /> } @else { <mv-icon [name]="icon()" /> }<span class="txt">{{ text() }}</span></span>
     }`,
   styles: `
     :host { display: inline-flex; min-width: 0; max-width: 100% }
@@ -36,14 +40,17 @@ export class RepoChip {
   readonly name = input<string>('');
   /** A branch of it: the chip is then the branch, linked to its page. */
   readonly branch = input<string>('');
+  /** The repository's gem colour (gemOf): shown in place of its platform's mark. */
+  readonly gem = input<string>('');
 
   protected readonly isBranch = computed(() => !!this.branch());
-  protected readonly kind = computed(() => (this.isBranch() ? 'branch' : 'repo ' + (this.loc()?.platform ?? 'git')));
   protected readonly icon = computed(() => (this.isBranch() ? 'branch' : (this.loc()?.platform ?? 'file')));
+  protected readonly kind = computed(() => (this.isBranch() ? 'branch' : 'repo ' + (this.loc()?.platform ?? 'git')));
   protected readonly text = computed(() => (this.isBranch() ? this.branch() : (this.loc()?.path?.replace(/\.git$/, '') || this.name())));
   protected readonly href = computed(() => (this.isBranch() ? branchUrlOf(this.loc(), this.branch()) : webUrlOf(this.loc())));
   protected readonly title = computed(() => {
-    const what = this.isBranch() ? `Branch ${this.branch()} of ${this.loc()?.short ?? this.name()}` : `Repository ${this.loc()?.short ?? this.name()}`;
+    const where = PLATFORM[this.loc()?.platform ?? ''];
+    const what = this.isBranch() ? `Branch ${this.branch()} of ${this.loc()?.short ?? this.name()}` : `Repository ${this.loc()?.short ?? this.name()}${where ? ' on ' + where : ''}`;
     return this.href() ? `${what} · Opens in a new tab` : what;
   });
 }

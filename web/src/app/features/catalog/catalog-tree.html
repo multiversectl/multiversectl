@@ -62,7 +62,7 @@
             @if (r.node.installedAs; as inst) {
               @if (reposOf(inst); as list) {
                 @if (list.length) {
-                  <span class="chips">@for (x of list; track x.key) { <mv-repo-chip [loc]="x.loc" [name]="x.key" /> }</span>
+                  <span class="chips">@for (x of list; track x.key) { <mv-repo-chip [loc]="x.loc" [name]="x.key" [gem]="gemAt(list, x.key)" /> }</span>
                 } @else { <span class="muted">None listed.</span> }
               } @else if (reposOf(inst) === null) {
                 <span class="muted">Could not be read.</span> <button type="button" class="btn small ghost" (click)="retryRepos(inst)">Try again</button>

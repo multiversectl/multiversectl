@@ -202,6 +202,7 @@ func (s Services) fleetOf(ctx context.Context, w app.MultiverseInfo) fleetMultiv
 		fw.Error = err.Error()
 		return fw
 	}
+	fw.Repos = sortedKeys(svc.Manifest.Repos)
 	list, err := svc.List(ctx, app.ListOptions{Services: true, Freshness: true})
 	if err != nil {
 		fw.Error = err.Error()

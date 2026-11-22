@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Api } from '../../core/api.service';
 import { Events } from '../../core/events.service';
 import { MultiverseView, NodeView, RepoView } from '../../core/models';
+import { gemOf } from '../../shared/ui/gem';
 import { Ops } from '../../core/ops.service';
 import { Badge } from '../../shared/ui/badge';
 import { CopyButton } from '../../shared/ui/copy-button';
@@ -126,6 +127,7 @@ export class CatalogTree {
     if (r.node.kind === 'multiverse' && r.node.installedAs && next.has(r.node.path)) void this.loadRepos(r.node.installedAs);
   }
 
+  protected gemAt(list: RepoView[], key: string): string { return gemOf(list.map((r) => r.key), key); }
   protected reposOf(installedAs: string): RepoView[] | null | undefined { return this.repos().get(installedAs); }
   protected retryRepos(name: string): void { const next = new Map(this.repos()); next.delete(name); this.repos.set(next); void this.loadRepos(name); }
 

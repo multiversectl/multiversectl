@@ -20,7 +20,7 @@ export interface UniverseView {
   created?: string; lastStarted?: string; note?: string; pr?: string; branches?: Record<string, string>;
   behind?: number; apps: AppView[]; checkouts: CheckoutView[];
 }
-export interface FleetMultiverse { name: string; root: string; universes: UniverseView[]; error?: string; warnings?: string[] }
+export interface FleetMultiverse { name: string; root: string; universes: UniverseView[]; repos?: string[]; error?: string; warnings?: string[] }
 export interface FleetView { multiverses: FleetMultiverse[]; error?: string }
 
 export interface DiffView { files: number; added: number; removed: number }

@@ -6,6 +6,7 @@ import { universeLink } from '../../core/util';
 import { bytes } from '../../shared/chart/chart-math';
 import { Sparkline } from '../../shared/chart/sparkline';
 import { AgoPipe } from '../../shared/ui/ago.pipe';
+import { gemOf, Ring } from '../../shared/ui/gem';
 import { Icon } from '../../shared/ui/icon';
 import { dirtyCheckouts, expectedOf, runState } from './universe-state';
 
@@ -16,10 +17,11 @@ import { dirtyCheckouts, expectedOf, runState } from './universe-state';
  */
 @Component({
   selector: 'mv-universe-card',
-  imports: [RouterLink, Sparkline, Icon, AgoPipe],
+  imports: [RouterLink, Sparkline, Icon, Ring, AgoPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="tile" [class.stopped]="state() === 'stopped'" [routerLink]="link()">
+      <mv-ring class="ring" [colours]="ring()" [dim]="state() === 'stopped'" />
       @if (edited() || universe().created) {
         <span class="wtrow">
           @if (universe().created) { <span class="wt" [attr.title]="'Created ' + universe().created">{{ universe().created | ago }}</span> }
@@ -74,15 +76,16 @@ import { dirtyCheckouts, expectedOf, runState } from './universe-state';
     .tile { position: relative; display: flex; flex-direction: column; gap: 6px; height: 100%; min-height: 128px; padding: 14px 16px 14px; color: var(--text); text-decoration: none;
       background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-xl); transition: border-color .12s, transform .12s }
     .tile:hover { border-color: var(--accent); transform: translateY(-1px) }
+    .ring { position: absolute; top: 10px; right: 10px; font-size: 1.6rem }
     .tile.stopped { background: transparent }
     .foot { margin-top: auto; display: flex; flex-direction: column; gap: 8px }
     .run { display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--muted) }
     .run.ok { color: var(--ok) } .run.warn { color: var(--warn) }
     .dot { width: 10px; height: 10px; flex: none }
-    .wtrow { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: -4px }
+    .wtrow { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: -4px; padding-right: 38px }
     .wt { font-size: var(--fs-2xs); font-weight: 500; color: var(--faint); white-space: nowrap }
     .wt.dirty { color: var(--warn) }
-    .num { min-width: 0; font: 300 var(--fs-hero)/1 var(--sans); letter-spacing: -.045em; font-variant-numeric: tabular-nums; overflow-wrap: break-word }
+    .num { padding-right: 38px; min-width: 0; font: 300 var(--fs-hero)/1 var(--sans); letter-spacing: -.045em; font-variant-numeric: tabular-nums; overflow-wrap: break-word }
     .num.word { font: 600 var(--fs-xl)/1.2 var(--sans); letter-spacing: -.015em; min-height: 2.4em; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden }
     .behind { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; color: var(--warn);
       font: 600 var(--fs-2xs)/1 var(--sans); font-variant-numeric: tabular-nums }
@@ -102,6 +105,9 @@ import { dirtyCheckouts, expectedOf, runState } from './universe-state';
 export class UniverseCard {
   private readonly events = inject(Events);
   readonly universe = input.required<UniverseView>();
+  /** Its multiverse's repositories, whose order gives each its gem. */
+  readonly repos = input<readonly string[]>([]);
+  protected readonly ring = computed(() => this.universe().checkouts.map((c) => gemOf(this.repos(), c.repo)).filter(Boolean));
 
   protected readonly bytes = bytes;
   /** This universe's live reading, by the same key the server sends it under. */

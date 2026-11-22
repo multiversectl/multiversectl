@@ -50,7 +50,7 @@
         @for (x of g.w.warnings ?? []; track x) { <p class="muted"><mv-badge tone="warn">warning</mv-badge> {{ x }}</p> }
         @if (g.list.length) {
           <div class="universes">
-            @for (u of g.list; track u.name) { <mv-universe-card [universe]="u" /> }
+            @for (u of g.list; track u.name) { <mv-universe-card [universe]="u" [repos]="g.w.repos ?? []" /> }
           </div>
         } @else if (!g.w.error) {
           @if (g.w.universes.length) {
