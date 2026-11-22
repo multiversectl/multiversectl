@@ -4,6 +4,7 @@
 /* The number is what a universe is called, and the one large thing on the page. */
 .numeral { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.05; margin: 0 0 10px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums }
 .numeral.word { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.15 }
+.numeral .ring { font-size: .7em; margin-right: .3em; vertical-align: -0.05em }
 .numeral.live { border-left: 4px solid var(--accent); padding-left: 14px }
 @media (min-width: 900px) { .numeral.live { margin-left: -18px } }
 .state { gap: 8px; margin-bottom: 6px }
