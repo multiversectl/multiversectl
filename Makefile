@@ -1,6 +1,7 @@
 GO ?= go
 BIN ?= dist/multiversectl
 SERVER_BIN ?= dist/multiversectl-server
+HERDR_BIN ?= dist/multiversectl-herdr
 PREFIX ?= $(HOME)/.local/bin
 SCHEMA = schema/multiverse.v1alpha1.yaml
 TYPES = internal/adapters/manifest/v1alpha1/types.go
@@ -22,14 +23,16 @@ ui: ## Build the Angular app into the server's embed directory (needs Node; not 
 ui-dev: ## Serve the Angular app with hot reload on :4200, proxied to a running multiversectl-server
 	cd web && npm ci && npx ng serve --open
 
-build: ## Build both binaries into dist/ (run `make ui` first for the Angular app)
+build: ## Build the binaries into dist/ (run `make ui` first for the Angular app)
 	$(GO) build -o $(BIN) ./cmd/multiversectl
 	$(GO) build -o $(SERVER_BIN) ./cmd/multiversectl-server
+	$(GO) build -o $(HERDR_BIN) ./cmd/multiversectl-herdr
 
 install: ## Build and install into $(PREFIX) (default ~/.local/bin)
 	$(GO) build -o $(PREFIX)/multiversectl ./cmd/multiversectl
 	$(GO) build -o $(PREFIX)/multiversectl-server ./cmd/multiversectl-server
-	@echo "installed $(PREFIX)/multiversectl and $(PREFIX)/multiversectl-server"
+	$(GO) build -o $(PREFIX)/multiversectl-herdr ./cmd/multiversectl-herdr
+	@echo "installed $(PREFIX)/multiversectl, multiversectl-server and multiversectl-herdr"
 
 test: ## Run the tests
 	$(GO) test ./...

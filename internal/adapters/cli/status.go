@@ -43,6 +43,8 @@ type universeStatus struct {
 	Branch      string `json:"branch"`
 	About       string `json:"about,omitempty"`
 	PR          string `json:"pr,omitempty"`
+	// Dir is where its checkouts are; a path under it is in this universe.
+	Dir string `json:"dir,omitempty"`
 
 	style   string
 	started time.Time
@@ -129,7 +131,7 @@ func (r runner) collectStatus(ctx context.Context, fetch bool) (statusReport, er
 		}
 		for _, u := range list {
 			state, style, up := standing(u)
-			us := universeStatus{Name: u.Name, State: state, Up: up, Branch: oneBranch(u.Branches), About: u.Note, PR: u.PR, style: style, started: u.LastStarted}
+			us := universeStatus{Name: u.Name, State: state, Up: up, Branch: oneBranch(u.Branches), About: u.Note, PR: u.PR, Dir: u.Dir, style: style, started: u.LastStarted}
 			if !u.LastStarted.IsZero() {
 				us.LastStarted = u.LastStarted.UTC().Format("2006-01-02T15:04:05Z")
 			}

@@ -751,7 +751,7 @@ func (r runner) universeCmd() *cobra.Command {
 		RunE:    func(cmd *cobra.Command, _ []string) error { return cmd.Help() },
 	}
 	cmd.AddCommand(r.newCmd(), r.upCmd(), r.universeDoctorCmd(), r.downCmd(), r.syncCmd(), r.aboutCmd(), r.notesCmd(), r.rmCmd(), r.lsCmd(), r.urlsCmd(),
-		r.envCmd(), r.runCmd(), r.execCmd())
+		r.envCmd(), r.runCmd(), r.execCmd(), r.whichCmd())
 	return cmd
 }
 

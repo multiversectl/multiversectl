@@ -28,8 +28,24 @@ builds:
     ldflags:
       - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
 
+  # The herdr integration is its own binary too: multiversectl knows nothing of
+  # herdr. It is released only as raw assets, which the herdr plugin downloads;
+  # the tarball, the formula and the package leave it out.
+  - id: multiversectl-herdr
+    main: ./cmd/multiversectl-herdr
+    binary: multiversectl-herdr
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
 archives:
   - id: tarball
+    ids: [multiversectl, multiversectl-server]
     formats: [tar.gz]
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     files:
@@ -48,6 +64,11 @@ archives:
     ids: [multiversectl-server]
     formats: [binary]
     name_template: "multiversectl-server_{{ .Os }}_{{ .Arch }}"
+
+  - id: raw-herdr
+    ids: [multiversectl-herdr]
+    formats: [binary]
+    name_template: "multiversectl-herdr_{{ .Os }}_{{ .Arch }}"
 
 checksum:
   name_template: checksums.txt
@@ -77,6 +98,7 @@ signs:
 
 nfpms:
   - id: deb
+    ids: [multiversectl, multiversectl-server]
     package_name: multiversectl
     formats: [deb]
     maintainer: "Cristian Steib <cristiansteib@gmail.com>"

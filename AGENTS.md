@@ -27,6 +27,7 @@ or its `+markers`, and commit the result.
 | `internal/app` | Use cases over the ports in `ports.go`. Never reach for docker, git or the filesystem directly. |
 | `internal/adapters/*` | One adapter per port. Only these may touch the outside world. |
 | `internal/adapters/cli` | Flags and rendering. Colour and tables live here, not in `app`. |
+| `internal/integrations/*` | Other tools' integrations, each its own binary under `cmd/` (e.g. `multiversectl-herdr`). They reach multiversectl only through its CLI and JSON output, never its packages, so the core knows nothing of them and they can move out. |
 | `internal/tools/schemagen` | `go/ast` generator for the CRD-style schema. |
 | `schema/` | The generated field reference, and the package that embeds and reads it: the CRD shape is known here, not by its callers. Generated: `make schema`. |
 | `site/` | The documentation site (Astro). `make docs` builds it into `site/dist`; the release workflow builds it again, stamped with the release, and publishes it to Pages. See `site/README.md`. |
