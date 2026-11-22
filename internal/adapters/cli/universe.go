@@ -702,10 +702,9 @@ func (r runner) urlsCmd() *cobra.Command {
 				}
 				for _, appKey := range sortedKeys(s.Manifest.Apps) {
 					for _, route := range s.Routes(st, appKey) {
-						if route.Hostname == "" {
-							continue
+						if url := s.RouteURL(route); url != "" && (route.Hostname != "" || route.ByIP) {
+							s.Out.Plain("%s", url)
 						}
-						s.Out.Plain("%s", s.Manifest.Origin(route.Entrypoint, route.Hostname))
 					}
 				}
 				return nil
