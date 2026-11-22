@@ -23,6 +23,9 @@ The multiversectl plugin for herdr runs it (herdr plugin install multiversectl/h
 you rarely need to.
 
 usage:
+  multiversectl-herdr open [-m multiverse] <universe>   open a universe as a workspace, one tab per repository
+  multiversectl-herdr open --all                        open every universe
+  multiversectl-herdr pick      list the universes and open the one chosen (the plugin's popup)
   multiversectl-herdr sync      label every pane and workspace ($mv_universe, $mv_multiverse, $mv_state, $mv_up)
   multiversectl-herdr popup [--no-wait]   the focused pane's universe, then multiversectl status, until enter
   multiversectl-herdr debug     write what herdr passes the plugin to debug.json in its state directory
@@ -49,12 +52,22 @@ func main() {
 	cmd := flag.NewFlagSet(flag.Arg(0), flag.ExitOnError)
 	cmd.Usage = flag.Usage
 	noWait := cmd.Bool("no-wait", false, "popup: exit without waiting for enter")
+	mv := cmd.String("m", "", "open: the multiverse the universe is in, when two have one of that name")
+	all := cmd.Bool("all", false, "open: every universe")
 	if flag.NArg() > 0 {
 		_ = cmd.Parse(flag.Args()[1:])
 	}
 
 	var err error
 	switch flag.Arg(0) {
+	case "open":
+		if *all == (cmd.NArg() == 1) || cmd.NArg() > 1 {
+			fmt.Fprintln(os.Stderr, "multiversectl-herdr open: name one universe, or --all")
+			os.Exit(2)
+		}
+		err = p.OpenNamed(ctx, *mv, cmd.Arg(0), *all)
+	case "pick":
+		err = p.Pick(ctx)
 	case "sync":
 		err = p.Sync(ctx)
 	case "popup":

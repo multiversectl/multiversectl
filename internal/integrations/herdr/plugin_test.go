@@ -210,3 +210,65 @@ func TestFocusedCwdReadsHerdrsContext(t *testing.T) {
 		t.Errorf("focusedCwd = %q", got)
 	}
 }
+
+func TestOpenMakesAWorkspaceWithATabPerRepository(t *testing.T) {
+	dir := "/m/acme/universes/fix-login"
+	u := Universe{Multiverse: "acme", Name: "fix/login", State: "running", Up: "3/3", Dir: dir,
+		Checkout: map[string]string{"web": dir + "/web", "api": dir + "/api"}}
+	f := &fakeHerdr{results: map[string]any{
+		"workspace.list":   map[string]any{"workspaces": []any{}},
+		"workspace.create": map[string]any{"workspace": map[string]any{"workspace_id": "w5"}, "tab": map[string]any{"tab_id": "w5:t1"}},
+	}}
+	var out bytes.Buffer
+	p := Plugin{Socket: f.serve(t), Out: &out}
+	if err := p.Open(context.Background(), u, true); err != nil {
+		t.Fatal(err)
+	}
+	ws := f.calls("workspace.create")
+	if len(ws) != 1 || ws[0]["label"] != "fix/login" || ws[0]["cwd"] != dir+"/api" {
+		t.Fatalf("workspace.create = %v", ws)
+	}
+	if r := f.calls("tab.rename"); len(r) != 1 || r[0]["tab_id"] != "w5:t1" || r[0]["label"] != "api" {
+		t.Errorf("the first tab is the first repository: %v", r)
+	}
+	if tabs := f.calls("tab.create"); len(tabs) != 1 || tabs[0]["label"] != "web" || tabs[0]["cwd"] != dir+"/web" || tabs[0]["workspace_id"] != "w5" {
+		t.Errorf("tab.create = %v", tabs)
+	}
+	if m := f.calls("workspace.report_metadata"); len(m) != 1 || m[0]["tokens"].(map[string]any)["mv_universe"] != "fix/login" {
+		t.Errorf("the workspace is labelled with its universe: %v", m)
+	}
+
+	// Open again: the labelled workspace is focused, nothing is made.
+	f.results["workspace.list"] = map[string]any{"workspaces": []any{map[string]any{
+		"workspace_id": "w5", "label": "fix/login", "tokens": map[string]any{"mv_universe": "fix/login", "mv_multiverse": "acme"}}}}
+	if err := p.Open(context.Background(), u, true); err != nil {
+		t.Fatal(err)
+	}
+	if len(f.calls("workspace.create")) != 1 {
+		t.Error("a second open made another workspace")
+	}
+	if fo := f.calls("workspace.focus"); len(fo) != 1 || fo[0]["workspace_id"] != "w5" {
+		t.Errorf("workspace.focus = %v", fo)
+	}
+}
+
+func TestTokensNameThePanesRepository(t *testing.T) {
+	pl := Place{Path: "/m/acme/universes/fix-login/api/src", Multiverse: "acme", Universe: "fix/login", Dir: "/m/acme/universes/fix-login"}
+	if got := TokensFor(pl)["mv_repo"]; got != "api" {
+		t.Errorf("mv_repo = %v", got)
+	}
+	pl.Path = pl.Dir
+	if got := TokensFor(pl)["mv_repo"]; got != nil {
+		t.Errorf("the universe's own directory is in no repository: %v", got)
+	}
+}
+
+func TestFindSaysWhichMultiverseWhenANameIsInTwo(t *testing.T) {
+	all := []Universe{{Multiverse: "acme", Name: "main"}, {Multiverse: "globex", Name: "main"}}
+	if _, err := find(all, "", "main"); err == nil || !strings.Contains(err.Error(), "-m") {
+		t.Errorf("err = %v", err)
+	}
+	if u, err := find(all, "globex", "main"); err != nil || u.Multiverse != "globex" {
+		t.Errorf("find -m globex = %+v, %v", u, err)
+	}
+}

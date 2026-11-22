@@ -20,7 +20,7 @@ const Source = "plugin:multiversectl"
 
 // Tokens are the sidebar tokens the labels set, used as $mv_universe and so
 // on in herdr's ui.sidebar rows.
-var Tokens = []string{"mv_universe", "mv_multiverse", "mv_state", "mv_up"}
+var Tokens = []string{"mv_universe", "mv_multiverse", "mv_state", "mv_up", "mv_repo"}
 
 // Place is one entry of `multiversectl universe which -o json`: the contract
 // between this integration and multiversectl.
@@ -74,7 +74,7 @@ func TokensFor(pl Place) map[string]any {
 	if universe == "" && pl.Multiverse != "" {
 		universe = "root"
 	}
-	vals := []string{universe, pl.Multiverse, pl.State, pl.Up}
+	vals := []string{universe, pl.Multiverse, pl.State, pl.Up, repoOf(pl)}
 	out := make(map[string]any, len(Tokens))
 	for i, k := range Tokens {
 		if v := vals[i]; v != "" {
@@ -84,6 +84,19 @@ func TokensFor(pl Place) map[string]any {
 		}
 	}
 	return out
+}
+
+// repoOf is the repository a path in a universe is in: a universe keeps one
+// checkout per repository, as <dir>/<repo>.
+func repoOf(pl Place) string {
+	if pl.Dir == "" || pl.Path == "" {
+		return ""
+	}
+	rel, err := filepath.Rel(pl.Dir, pl.Path)
+	if err != nil || rel == "." || strings.HasPrefix(rel, "..") {
+		return ""
+	}
+	return strings.Split(rel, string(filepath.Separator))[0]
 }
 
 func clip(s string, n int) string {
