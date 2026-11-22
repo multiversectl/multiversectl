@@ -53,7 +53,7 @@ func TestWithNoDomainEveryAddressIsTheForwardedOne(t *testing.T) {
 		}
 	}
 	for _, route := range svc.Routes(st, "api") {
-		if got := svc.routeURL(route); got != route.ForwardURL {
+		if got := svc.RouteURL(route); got != route.ForwardURL {
 			t.Errorf("%s listed at %q, want the forwarded %q", route.Name, got, route.ForwardURL)
 		}
 	}
@@ -92,7 +92,7 @@ func TestAHostCanAskToBeReachedByIPAlone(t *testing.T) {
 	urls := map[string][]string{}
 	for _, route := range svc.Routes(st, "api") {
 		key := strings.TrimSuffix(route.Name, "-"+st.Slug)
-		urls[key] = append(urls[key], svc.routeURL(route))
+		urls[key] = append(urls[key], svc.RouteURL(route))
 	}
 	if got := urls["keycloak"]; len(got) != 1 || got[0] != "http://192.0.2.7:43791" {
 		t.Errorf("keycloak is at %v, want its forwarded address alone", got)

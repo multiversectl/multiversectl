@@ -75,7 +75,7 @@ func (s *Service) waitReady(ctx context.Context, appKey string, routes []Route, 
 			if ok {
 				if lastHost[route.Hostname] != "ready" {
 					lastHost[route.Hostname] = "ready"
-					s.Out.Info("%s: %s answers", appKey, s.routeURL(route))
+					s.Out.Info("%s: %s answers", appKey, s.RouteURL(route))
 				}
 				continue
 			}
@@ -83,7 +83,7 @@ func (s *Service) waitReady(ctx context.Context, appKey string, routes []Route, 
 			notYet = append(notYet, route)
 			if !announced["host:"+route.Hostname] {
 				announced["host:"+route.Hostname] = true
-				s.Out.Info("%s: waiting for %s to answer (%s)", appKey, s.routeURL(route), why)
+				s.Out.Info("%s: waiting for %s to answer (%s)", appKey, s.RouteURL(route), why)
 			}
 		}
 		if len(pending) == 0 && len(notYet) == 0 {
@@ -149,7 +149,7 @@ func (s *Service) pendingHealth(ctx context.Context, req RuntimeRequest, last ma
 // hostAnswers asks a host's address once, the way its ready setting says, and
 // says what it saw when it does not answer.
 func (s *Service) hostAnswers(ctx context.Context, route Route) (bool, string) {
-	base := s.routeURL(route)
+	base := s.RouteURL(route)
 	how := route.Ready
 	if how == domain.ReadyTrue {
 		how = ""
@@ -217,7 +217,7 @@ func (s *Service) notReady(appKey string, timeout time.Duration, pending map[str
 		parts = append(parts, fmt.Sprintf("service %s is still %s", svc, pending[svc]))
 	}
 	for _, route := range hosts {
-		parts = append(parts, fmt.Sprintf("%s did not answer (last: %s)", s.routeURL(route), last[route.Hostname]))
+		parts = append(parts, fmt.Sprintf("%s did not answer (last: %s)", s.RouteURL(route), last[route.Hostname]))
 	}
 	msg := fmt.Sprintf("%s: not ready after %s: %s", appKey, timeout.Round(time.Second), strings.Join(parts, "; "))
 	if strict {

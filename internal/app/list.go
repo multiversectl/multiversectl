@@ -165,9 +165,10 @@ func (s *Service) List(ctx context.Context, opts ListOptions) ([]Summary, error)
 	return out, nil
 }
 
-// routeURL is where a route answers, with the entrypoint port when it is not
-// the default.
-func (s *Service) routeURL(route Route) string {
+// RouteURL is where a route answers: its hostname, with the entrypoint port
+// when it is not the default, or for a host reached only by IP and port
+// (portForward: only), the forwarded address.
+func (s *Service) RouteURL(route Route) string {
 	if route.ByIP {
 		return route.ForwardURL
 	}
@@ -201,7 +202,7 @@ func (s *Service) appSummaries(ctx context.Context, st domain.UniverseState, con
 			summary.URLs = append(summary.URLs, HostURL{
 				Host:    strings.TrimSuffix(route.Name, "-"+u.Slug()),
 				Service: route.Service,
-				URL:     s.routeURL(route),
+				URL:     s.RouteURL(route),
 				// By IP, the one address a route has is the forwarded one.
 				Forwarded: route.ByIP,
 			})

@@ -340,7 +340,7 @@ func (s *Service) checkUniverse(ctx context.Context, add addCheck, st domain.Uni
 // address no route matches) and a service that fails on its front page.
 func (s *Service) checkAddresses(ctx context.Context, add addCheck, st domain.UniverseState, appKey string) {
 	for _, route := range s.Routes(st, appKey) {
-		url := s.routeURL(route)
+		url := s.RouteURL(route)
 		name := "url " + appKey + "/" + strings.TrimSuffix(route.Name, "-"+st.Slug)
 		// Not every host speaks HTTP: a gRPC service answers an HTTP/1.1 request
 		// with an error that says nothing about whether it is up.
