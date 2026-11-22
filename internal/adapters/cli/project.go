@@ -147,7 +147,7 @@ func (r runner) summarize(res app.ProjectResult) {
 	if res.Node != "" {
 		r.out.Info("listed in the root catalog as `%s`; check with `multiversectl catalog ls --json`", res.Node)
 	}
-	r.out.Info("next: multiverse.yaml only lists the repositories. A repository with a compose file runs as an app of its own name; to give an app its hosts (addresses), secrets or services, add `spec.apps` to it, commit, push and run `multiversectl catalog sync` (reference: https://multiversectl.dev/reference/manifest.html)")
+	r.out.Info("next: multiverse.yaml only lists the repositories. A repository with a compose file runs as an app of its own name; to give an app its hosts (addresses), secrets or services, add `spec.apps` to it, commit, push and run `multiversectl catalog sync` (reference: https://multiversectl.dev/docs/reference/manifest/)")
 }
 
 // offerInstall is the guide's last step: put the multiverse on this machine, so

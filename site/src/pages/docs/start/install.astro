@@ -41,7 +41,7 @@ import Terminal from '../../../components/Terminal.astro';
   <p>The list itself is signed, with a short-lived certificate tied to the workflow that built the release rather than to a key anyone could take, so you can check it yourself:</p>
   <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">cosign verify-blob checksums.txt \</span>
     --signature checksums.txt.sig --certificate checksums.txt.pem \
-    --certificate-identity-regexp <span class="s">'^https://github.com/multiversectl/multiversectl/'</span> \
+    --certificate-identity-regexp <span class="s">'^https://github.com/(multiversectl|cristiansteib)/multiversectl/'</span> \
     --certificate-oidc-issuer https://token.actions.githubusercontent.com
 <span class="p">$ </span><span class="in">sha256sum -c checksums.txt --ignore-missing</span></pre></Terminal>
 </section>

@@ -60,7 +60,7 @@ checksum:
 #
 #   cosign verify-blob checksums.txt \
 #     --signature checksums.txt.sig --certificate checksums.txt.pem \
-#     --certificate-identity-regexp '^https://github.com/multiversectl/multiversectl/' \
+#     --certificate-identity-regexp '^https://github.com/(multiversectl|cristiansteib)/multiversectl/' \
 #     --certificate-oidc-issuer https://token.actions.githubusercontent.com
 signs:
   - cmd: cosign
