@@ -23,7 +23,7 @@ The multiversectl plugin for herdr runs it (herdr plugin install multiversectl/h
 you rarely need to.
 
 usage:
-  multiversectl-herdr open [-m multiverse] <universe>   open a universe as a workspace, one tab per repository
+  multiversectl-herdr open [-m multiverse] <universe>   open a universe as a workspace, in its folder
   multiversectl-herdr open --all                        open every universe
   multiversectl-herdr pick      list the universes and open the one chosen (the plugin's popup)
   multiversectl-herdr sync      label every pane and workspace ($mv_universe, $mv_multiverse, $mv_state, $mv_up)

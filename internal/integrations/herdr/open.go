@@ -7,13 +7,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
-	"sort"
 	"strconv"
 	"strings"
 )
 
 // Universe is a universe as `multiversectl universe ls -o json` gives it,
 // with the multiverse it is in: what opening it as a workspace needs.
+// Checkout is each repository's checkout, under Dir.
 type Universe struct {
 	Multiverse string            `json:"-"`
 	Name       string            `json:"name"`
@@ -21,16 +21,6 @@ type Universe struct {
 	Up         string            `json:"up"`
 	Dir        string            `json:"dir"`
 	Checkout   map[string]string `json:"checkout"`
-}
-
-// Repos are the universe's repositories, in a stable order.
-func (u Universe) Repos() []string {
-	repos := make([]string, 0, len(u.Checkout))
-	for r := range u.Checkout {
-		repos = append(repos, r)
-	}
-	sort.Strings(repos)
-	return repos
 }
 
 func (p Plugin) run(ctx context.Context, args ...string) ([]byte, error) {
@@ -118,9 +108,9 @@ func workspaceOf(c *Client, u Universe) (string, error) {
 	return "", nil
 }
 
-// Open shows universe u as a herdr workspace named after it, with a tab per
-// repository opened in that repository's checkout. A workspace already open
-// for it is focused instead.
+// Open shows universe u as a herdr workspace named after it, with one tab,
+// "universe", in the universe's folder: the parent of every repository's
+// checkout. A workspace already open for it is focused instead.
 func (p Plugin) Open(ctx context.Context, u Universe, focus bool) error {
 	c, err := Dial(p.Socket)
 	if err != nil {
@@ -136,12 +126,7 @@ func (p Plugin) Open(ctx context.Context, u Universe, focus bool) error {
 		return err
 	}
 
-	repos := u.Repos()
-	first := u.Dir
-	if len(repos) > 0 {
-		first = u.Checkout[repos[0]]
-	}
-	res, err := c.Call("workspace.create", map[string]any{"cwd": first, "label": u.Name, "focus": focus})
+	res, err := c.Call("workspace.create", map[string]any{"cwd": u.Dir, "label": u.Name, "focus": focus})
 	if err != nil {
 		return err
 	}
@@ -156,22 +141,16 @@ func (p Plugin) Open(ctx context.Context, u Universe, focus bool) error {
 	if err := json.Unmarshal(res, &created); err != nil || created.Workspace.ID == "" {
 		return fmt.Errorf("herdr workspace.create: unexpected answer %s", res)
 	}
-	ws := created.Workspace.ID
-	if len(repos) > 0 && created.Tab.ID != "" {
-		if _, err := c.Call("tab.rename", map[string]any{"tab_id": created.Tab.ID, "label": repos[0]}); err != nil {
-			return err
-		}
-	}
-	for _, r := range repos[min(1, len(repos)):] {
-		if _, err := c.Call("tab.create", map[string]any{"workspace_id": ws, "cwd": u.Checkout[r], "label": r, "focus": false}); err != nil {
+	if created.Tab.ID != "" {
+		if _, err := c.Call("tab.rename", map[string]any{"tab_id": created.Tab.ID, "label": "universe"}); err != nil {
 			return err
 		}
 	}
 	tokens := TokensFor(Place{Multiverse: u.Multiverse, Universe: u.Name, State: u.State, Up: u.Up, Dir: u.Dir})
-	if _, err := c.Call("workspace.report_metadata", map[string]any{"workspace_id": ws, "source": Source, "tokens": tokens}); err != nil {
+	if _, err := c.Call("workspace.report_metadata", map[string]any{"workspace_id": created.Workspace.ID, "source": Source, "tokens": tokens}); err != nil {
 		return err
 	}
-	fmt.Fprintf(p.Out, "opened %s / %s: %s\n", u.Multiverse, u.Name, strings.Join(repos, ", "))
+	fmt.Fprintf(p.Out, "opened %s / %s in %s\n", u.Multiverse, u.Name, u.Dir)
 	return nil
 }
 
@@ -212,7 +191,7 @@ func (p Plugin) Pick(ctx context.Context) error {
 		_, _ = bufio.NewReader(p.In).ReadString('\n')
 		return nil
 	}
-	fmt.Fprintln(p.Out, "open a universe as a workspace, one tab per repository")
+	fmt.Fprintln(p.Out, "open a universe as a workspace, in its folder")
 	fmt.Fprintln(p.Out)
 	for i, u := range us {
 		fmt.Fprintf(p.Out, "  %2d  %s %-36s %-8s %5s  %s\n", i+1, stateIcon(u.State), u.Name, u.State, u.Up, u.Multiverse)

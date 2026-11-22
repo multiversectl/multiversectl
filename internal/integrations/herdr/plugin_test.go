@@ -211,7 +211,7 @@ func TestFocusedCwdReadsHerdrsContext(t *testing.T) {
 	}
 }
 
-func TestOpenMakesAWorkspaceWithATabPerRepository(t *testing.T) {
+func TestOpenMakesAWorkspaceInTheUniversesFolder(t *testing.T) {
 	dir := "/m/acme/universes/fix-login"
 	u := Universe{Multiverse: "acme", Name: "fix/login", State: "running", Up: "3/3", Dir: dir,
 		Checkout: map[string]string{"web": dir + "/web", "api": dir + "/api"}}
@@ -225,14 +225,14 @@ func TestOpenMakesAWorkspaceWithATabPerRepository(t *testing.T) {
 		t.Fatal(err)
 	}
 	ws := f.calls("workspace.create")
-	if len(ws) != 1 || ws[0]["label"] != "fix/login" || ws[0]["cwd"] != dir+"/api" {
+	if len(ws) != 1 || ws[0]["label"] != "fix/login" || ws[0]["cwd"] != dir {
 		t.Fatalf("workspace.create = %v", ws)
 	}
-	if r := f.calls("tab.rename"); len(r) != 1 || r[0]["tab_id"] != "w5:t1" || r[0]["label"] != "api" {
-		t.Errorf("the first tab is the first repository: %v", r)
+	if r := f.calls("tab.rename"); len(r) != 1 || r[0]["tab_id"] != "w5:t1" || r[0]["label"] != "universe" {
+		t.Errorf("its one tab is the universe's: %v", r)
 	}
-	if tabs := f.calls("tab.create"); len(tabs) != 1 || tabs[0]["label"] != "web" || tabs[0]["cwd"] != dir+"/web" || tabs[0]["workspace_id"] != "w5" {
-		t.Errorf("tab.create = %v", tabs)
+	if tabs := f.calls("tab.create"); len(tabs) != 0 {
+		t.Errorf("no tab per repository: %v", tabs)
 	}
 	if m := f.calls("workspace.report_metadata"); len(m) != 1 || m[0]["tokens"].(map[string]any)["mv_universe"] != "fix/login" {
 		t.Errorf("the workspace is labelled with its universe: %v", m)
