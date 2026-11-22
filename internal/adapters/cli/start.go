@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
 	"regexp"
 	"strconv"
 	"strings"
@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // startCmd is the whole of getting going, in one command.

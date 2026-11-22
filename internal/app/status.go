@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // CatalogStatus is the catalog this machine points at, as far as it can be told

@@ -10,7 +10,7 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 var _ app.Progress = (*Console)(nil)

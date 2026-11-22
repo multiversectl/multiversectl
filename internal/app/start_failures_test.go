@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // failingRuntime refuses to start the projects whose name ends in the given app.

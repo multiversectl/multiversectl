@@ -9,8 +9,8 @@ belongs to the project; it does not install the tool. Use one of:
 ```sh
 curl -fsSL https://multiversectl.dev/install.sh | sh
 brew install cristiansteib/tap/multiversectl
-mise use -g ubi:cristiansteib/multiversectl
+mise use -g ubi:multiversectl/multiversectl
 ```
 
 - [Documentation](https://multiversectl.dev/)
-- [Source](https://github.com/cristiansteib/multiversectl)
+- [Source](https://github.com/multiversectl/multiversectl)

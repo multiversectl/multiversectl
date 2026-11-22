@@ -26,7 +26,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // requestTimeout bounds one API call. The slow ones ask the container runtime
@@ -366,7 +366,7 @@ func (s *Server) doctor(w http.ResponseWriter, r *http.Request) {
 }
 
 // projectRepo is where the project is; a release is a page of it.
-const projectRepo = "https://github.com/cristiansteib/multiversectl"
+const projectRepo = "https://github.com/multiversectl/multiversectl"
 
 func releaseURL(version string) string {
 	return projectRepo + "/releases/tag/v" + strings.TrimPrefix(version, "v")

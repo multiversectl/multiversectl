@@ -8,7 +8,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // fakeEnv stands in for the catalog: a tree, what is installed, and a record of what was asked.

@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 type Store struct{ path string }

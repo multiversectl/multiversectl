@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // noTerminal answers every question as a script would: there is nobody to ask.

@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/updatecache"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/updatecache"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 type recentReleases struct {

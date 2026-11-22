@@ -11,9 +11,9 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/catalog/v1alpha1"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/catalog/v1alpha1"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 const (

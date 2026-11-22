@@ -10,7 +10,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // RefKind says where a git ref was found.

@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/fsx"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/fsx"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // A repository may call its compose file what compose accepts. With more than

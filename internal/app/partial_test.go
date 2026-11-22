@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // partialRig is a universe of four apps: api (always started), tool (on demand),

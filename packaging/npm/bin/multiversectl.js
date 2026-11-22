@@ -7,12 +7,12 @@
 const lines = [
   "multiversectl is distributed as a single binary, not as an npm package.",
   "",
-  "  curl -fsSL https://raw.githubusercontent.com/cristiansteib/multiversectl/main/install.sh | sh",
+  "  curl -fsSL https://raw.githubusercontent.com/multiversectl/multiversectl/main/install.sh | sh",
   "  brew install cristiansteib/tap/multiversectl",
-  "  mise use -g ubi:cristiansteib/multiversectl",
+  "  mise use -g ubi:multiversectl/multiversectl",
   "",
-  "Releases:      https://github.com/cristiansteib/multiversectl/releases",
-  "Documentation: https://cristiansteib.github.io/multiversectl/",
+  "Releases:      https://github.com/multiversectl/multiversectl/releases",
+  "Documentation: https://multiversectl.github.io/multiversectl/",
 ];
 console.error(lines.join("\n"));
 process.exit(1);

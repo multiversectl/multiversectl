@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // repository is the only place the release source is named.
-const repository = "cristiansteib/multiversectl"
+const repository = "multiversectl/multiversectl"
 
 const apiBase = "https://api.github.com"
 

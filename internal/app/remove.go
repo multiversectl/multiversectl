@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // RemoveInput names the universe to delete. Confirming with the person is the

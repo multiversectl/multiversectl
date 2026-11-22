@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 func TestArgv(t *testing.T) {

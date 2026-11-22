@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 func TestThePanelReadsContainersAndStats(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // BootstrapInput says where the multiverse lives and where its manifest comes

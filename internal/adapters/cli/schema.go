@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 
-	"github.com/cristiansteib/multiversectl/schema"
+	"github.com/multiversectl/multiversectl/schema"
 )
 
 // collapsedKey holds the names of the fields a node was cut off at. It is not

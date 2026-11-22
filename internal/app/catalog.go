@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // maxCatalogDepth bounds how far references are followed, as a second guard

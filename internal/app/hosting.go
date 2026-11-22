@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // hostedRepos groups the manifest's repositories by the hosting service

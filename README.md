@@ -1,6 +1,6 @@
 # multiversectl
 
-[![CI](https://github.com/cristiansteib/multiversectl/actions/workflows/ci.yml/badge.svg)](https://github.com/cristiansteib/multiversectl/actions/workflows/ci.yml)
+[![CI](https://github.com/multiversectl/multiversectl/actions/workflows/ci.yml/badge.svg)](https://github.com/multiversectl/multiversectl/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 **A full, working copy of a system that spans several repositories — per branch,
@@ -89,10 +89,10 @@ curl -fsSL https://multiversectl.dev/install.sh | sh
 brew install cristiansteib/tap/multiversectl
 
 # mise
-mise use -g ubi:cristiansteib/multiversectl
+mise use -g ubi:multiversectl/multiversectl
 ```
 
-A `.deb` is on the [releases page](https://github.com/cristiansteib/multiversectl/releases),
+A `.deb` is on the [releases page](https://github.com/multiversectl/multiversectl/releases),
 and `make install` builds from source into `~/.local/bin`. The script and the
 `.deb` also provide the alias `mvctl`; `multiversectl self-update` replaces the
 binary later. [Install](https://multiversectl.dev/docs/start/install/) lists what

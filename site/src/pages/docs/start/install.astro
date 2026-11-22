@@ -15,15 +15,15 @@ import Terminal from '../../../components/Terminal.astro';
   <div role="tabpanel" id="p-curl" aria-labelledby="t-curl" tabindex="0"><Terminal kind="shell"><pre><span class="p">$ </span><span class="in">curl -fsSL https://multiversectl.dev/install.sh | sh</span>
 <span class="c"># linux/darwin, amd64/arm64; set MULTIVERSECTL_VERSION to pin a release</span></pre></Terminal></div>
   <div role="tabpanel" id="p-brew" aria-labelledby="t-brew" tabindex="0" hidden><Terminal kind="shell"><pre><span class="p">$ </span><span class="in">brew install cristiansteib/tap/multiversectl</span></pre></Terminal><p class="muted">Or <code>brew tap cristiansteib/tap</code> once, then <code>brew install multiversectl</code>.</p></div>
-  <div role="tabpanel" id="p-mise" aria-labelledby="t-mise" tabindex="0" hidden><Terminal kind="shell"><pre><span class="p">$ </span><span class="in">mise use -g ubi:cristiansteib/multiversectl</span></pre></Terminal></div>
-  <div role="tabpanel" id="p-deb" aria-labelledby="t-deb" tabindex="0" hidden><p class="muted">Download the <code>.deb</code> from the <a href="https://github.com/cristiansteib/multiversectl/releases">releases page</a>, then:</p><Terminal kind="shell"><pre><span class="p">$ </span><span class="in">sudo dpkg -i multiversectl_*.deb</span></pre></Terminal></div>
+  <div role="tabpanel" id="p-mise" aria-labelledby="t-mise" tabindex="0" hidden><Terminal kind="shell"><pre><span class="p">$ </span><span class="in">mise use -g ubi:multiversectl/multiversectl</span></pre></Terminal></div>
+  <div role="tabpanel" id="p-deb" aria-labelledby="t-deb" tabindex="0" hidden><p class="muted">Download the <code>.deb</code> from the <a href="https://github.com/multiversectl/multiversectl/releases">releases page</a>, then:</p><Terminal kind="shell"><pre><span class="p">$ </span><span class="in">sudo dpkg -i multiversectl_*.deb</span></pre></Terminal></div>
   <p>The script, Homebrew and the <code>.deb</code> also install the alias <code>mvctl</code> and the <a href="/docs/tasks/server/">web view</a>, <code>multiversectl-server</code>, beside the command. <code>mise</code> installs the command line only, so <code>multiversectl server</code> then needs the other program on the <code>PATH</code>. <code>multiversectl self-update</code> replaces both with the latest release.</p>
 </section>
 
 <section id="build">
   <h2 id="build"><a href="#build">From source</a></h2>
   <p>Go 1.27 or newer:</p>
-  <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">git clone https://github.com/cristiansteib/multiversectl</span>
+  <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">git clone https://github.com/multiversectl/multiversectl</span>
 <span class="p">$ </span><span class="in">cd multiversectl &amp;&amp; make install</span>   <span class="c"># builds into ~/.local/bin</span></pre></Terminal>
   <p><code>make install</code> honours <code>PREFIX</code>, so <code>make install PREFIX=/usr/local/bin</code> puts it on the system path instead.</p>
 </section>
@@ -41,7 +41,7 @@ import Terminal from '../../../components/Terminal.astro';
   <p>The list itself is signed, with a short-lived certificate tied to the workflow that built the release rather than to a key anyone could take, so you can check it yourself:</p>
   <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">cosign verify-blob checksums.txt \</span>
     --signature checksums.txt.sig --certificate checksums.txt.pem \
-    --certificate-identity-regexp <span class="s">'^https://github.com/cristiansteib/multiversectl/'</span> \
+    --certificate-identity-regexp <span class="s">'^https://github.com/multiversectl/multiversectl/'</span> \
     --certificate-oidc-issuer https://token.actions.githubusercontent.com
 <span class="p">$ </span><span class="in">sha256sum -c checksums.txt --ignore-missing</span></pre></Terminal>
 </section>

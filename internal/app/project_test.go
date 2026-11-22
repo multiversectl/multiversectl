@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/catalog"
-	"github.com/cristiansteib/multiversectl/internal/adapters/fsx"
-	"github.com/cristiansteib/multiversectl/internal/adapters/manifest"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/catalog"
+	"github.com/multiversectl/multiversectl/internal/adapters/fsx"
+	"github.com/multiversectl/multiversectl/internal/adapters/manifest"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 type realLoader struct{}

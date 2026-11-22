@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // journalStore keeps a journal the way the real store does: a note at a time,

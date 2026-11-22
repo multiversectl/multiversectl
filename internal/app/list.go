@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // ListOptions says how much of a universe the caller wants described. Service

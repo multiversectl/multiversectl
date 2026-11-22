@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/catalog"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/catalog"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // rootRig is a machine whose root catalog is a file of the given kind.

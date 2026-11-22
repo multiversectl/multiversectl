@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // A routed service joins the universe's own network. A host reached by IP alone has

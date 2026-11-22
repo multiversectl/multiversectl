@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // NoteInput says what to change about a universe's note. A nil field is left as

@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/trace"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/trace"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // Git runs the git program. A nil trace says nothing of what it runs.

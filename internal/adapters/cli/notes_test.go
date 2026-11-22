@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // A note is prose: one that runs over two lines must not break the column its

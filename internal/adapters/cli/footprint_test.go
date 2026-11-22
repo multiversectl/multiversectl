@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 func TestTheRemovalCommandsComeInASafeOrder(t *testing.T) {

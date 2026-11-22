@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 func TestJobsRunTogetherUpToTheLimitAndReportEachOutcomeInOrder(t *testing.T) {

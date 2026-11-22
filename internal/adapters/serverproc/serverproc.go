@@ -19,8 +19,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 const binaryName = "multiversectl-server"

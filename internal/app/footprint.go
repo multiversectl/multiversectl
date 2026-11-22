@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // Item is one thing multiversectl put on this machine, and the command that

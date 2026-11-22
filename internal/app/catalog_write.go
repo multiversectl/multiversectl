@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // ErrCancelled is returned when the user declines a confirmation. Nothing has

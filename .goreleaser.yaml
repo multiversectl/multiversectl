@@ -60,7 +60,7 @@ checksum:
 #
 #   cosign verify-blob checksums.txt \
 #     --signature checksums.txt.sig --certificate checksums.txt.pem \
-#     --certificate-identity-regexp '^https://github.com/cristiansteib/multiversectl/' \
+#     --certificate-identity-regexp '^https://github.com/multiversectl/multiversectl/' \
 #     --certificate-oidc-issuer https://token.actions.githubusercontent.com
 signs:
   - cmd: cosign
@@ -81,7 +81,7 @@ nfpms:
     formats: [deb]
     maintainer: "Cristian Steib <cristiansteib@gmail.com>"
     description: Manage numbered local development environments side by side.
-    homepage: https://github.com/cristiansteib/multiversectl
+    homepage: https://github.com/multiversectl/multiversectl
     license: Apache-2.0
     section: utils
     bindir: /usr/bin

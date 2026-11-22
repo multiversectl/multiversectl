@@ -3,12 +3,12 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
 	"strings"
 
 	"github.com/spf13/cobra"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // catalogNewCmd makes one more entry for the catalog and lists it: a

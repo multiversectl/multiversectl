@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // projectHeader says which multiverse a listing is about and where its pieces are,

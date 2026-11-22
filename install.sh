@@ -4,7 +4,7 @@
 # Env: MULTIVERSECTL_VERSION (e.g. v0.0.1), MULTIVERSECTL_BIN_DIR, MULTIVERSECTL_SKIP_CHECKSUM=1
 set -eu
 
-REPO="cristiansteib/multiversectl"
+REPO="multiversectl/multiversectl"
 BIN="multiversectl"
 
 say() { printf '%s\n' "$*"; }

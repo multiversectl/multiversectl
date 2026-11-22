@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // StopInput names the universe and the apps to stop (all runnable ones when

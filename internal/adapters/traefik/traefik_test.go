@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 	"gopkg.in/yaml.v3"
 )
 

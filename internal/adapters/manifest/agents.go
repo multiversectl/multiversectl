@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // Agents writes the AGENTS.md of a multiverse's repository. It is short on
@@ -13,7 +13,7 @@ import (
 func (Writer) Agents(d app.ProjectDraft, source string) ([]byte, error) {
 	var b strings.Builder
 	fmt.Fprintf(&b, "# AGENTS.md\n\n")
-	fmt.Fprintf(&b, "This repository defines the **%s** multiverse for [multiversectl](https://github.com/cristiansteib/multiversectl): which repositories it is made of, and how to run isolated copies of it (*universes*) side by side. It holds no application code.\n\n", d.Name)
+	fmt.Fprintf(&b, "This repository defines the **%s** multiverse for [multiversectl](https://github.com/multiversectl/multiversectl): which repositories it is made of, and how to run isolated copies of it (*universes*) side by side. It holds no application code.\n\n", d.Name)
 
 	b.WriteString("## Files\n\n")
 	b.WriteString("- `multiverse.yaml`: the multiverse. `spec.repos` lists the repositories; each one with a `docker-compose.yml` runs as an app of the same name; one with none is only checked out. Add a `spec.apps` section only to say more than that.\n")

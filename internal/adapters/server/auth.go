@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/subtle"
 	"encoding/base64"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
 	"html/template"
 	"net/http"
 	"net/url"

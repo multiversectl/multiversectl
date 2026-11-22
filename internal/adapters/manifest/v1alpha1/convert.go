@@ -3,7 +3,7 @@ package v1alpha1
 import (
 	"errors"
 	"fmt"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
 	"gopkg.in/yaml.v3"
 	"io/fs"
 	"path/filepath"
@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 const (

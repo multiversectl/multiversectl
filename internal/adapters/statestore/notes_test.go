@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // journalDir is where a universe's notes are kept, one file to a note.

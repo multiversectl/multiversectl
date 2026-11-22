@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/cli"
-	"github.com/cristiansteib/multiversectl/internal/adapters/manifest"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/wire"
+	"github.com/multiversectl/multiversectl/internal/adapters/cli"
+	"github.com/multiversectl/multiversectl/internal/adapters/manifest"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/wire"
 )
 
 var (

@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/fsx"
-	"github.com/cristiansteib/multiversectl/internal/adapters/gitcli"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/fsx"
+	"github.com/multiversectl/multiversectl/internal/adapters/gitcli"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // These tests use the real filesystem and the real git: what is promised is

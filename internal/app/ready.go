@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // DefaultWaitTimeout is how long `up` waits for an app to be usable. An initial

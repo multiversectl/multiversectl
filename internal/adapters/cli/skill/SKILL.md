@@ -64,4 +64,4 @@ Fixing it is part of the job. Run `universe doctor <universe>`, read the error â
 - The proxy and the web server are shared with other agents and with the user: diagnose them with `doctor` (the machine) and `universe doctor` and say what to run; do not stop or restart them yourself.
 - No force pushes, and no resets of a branch you did not start. Never touch another universe (beyond adding a note to it) or anything under the multiverse's `.multiverse/`.
 
-Documentation: <https://multiversectl.dev/docs/>. A bug in the tool itself, once you are sure it is not the multiverse: <https://github.com/cristiansteib/multiversectl/issues>.
+Documentation: <https://multiversectl.dev/docs/>. A bug in the tool itself, once you are sure it is not the multiverse: <https://github.com/multiversectl/multiversectl/issues>.

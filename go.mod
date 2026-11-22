@@ -1,4 +1,4 @@
-module github.com/cristiansteib/multiversectl
+module github.com/multiversectl/multiversectl
 
 go 1.27
 
