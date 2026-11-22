@@ -24,7 +24,7 @@ you rarely need to.
 
 usage:
   multiversectl-herdr sync      label every pane and workspace ($mv_universe, $mv_multiverse, $mv_state, $mv_up)
-  multiversectl-herdr popup     the focused pane's universe, then multiversectl status, until enter
+  multiversectl-herdr popup [--no-wait]   the focused pane's universe, then multiversectl status, until enter
   multiversectl-herdr debug     write what herdr passes the plugin to debug.json in its state directory
   multiversectl-herdr version
 
@@ -35,7 +35,6 @@ environment:
 
 func main() {
 	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
-	noWait := flag.Bool("no-wait", false, "popup: exit without waiting for enter")
 	flag.Parse()
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
@@ -45,6 +44,14 @@ func main() {
 		bin = "multiversectl"
 	}
 	p := herdr.Plugin{Multiversectl: bin, Socket: herdr.SocketPath(), Out: os.Stdout, In: os.Stdin}
+
+	// Each command parses its own flags, after its name.
+	cmd := flag.NewFlagSet(flag.Arg(0), flag.ExitOnError)
+	cmd.Usage = flag.Usage
+	noWait := cmd.Bool("no-wait", false, "popup: exit without waiting for enter")
+	if flag.NArg() > 0 {
+		_ = cmd.Parse(flag.Args()[1:])
+	}
 
 	var err error
 	switch flag.Arg(0) {

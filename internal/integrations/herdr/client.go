@@ -29,24 +29,25 @@ func SocketPath() string {
 	return filepath.Join(home, ".config", "herdr", "herdr.sock")
 }
 
-// Client is one connection to herdr's socket.
+// Client talks to herdr's socket. herdr answers one request per connection
+// and then closes it, so each call dials afresh.
 type Client struct {
-	conn net.Conn
-	r    *bufio.Reader
+	path string
 	n    int
 }
 
-// Dial connects to the socket at path.
+// Dial checks that herdr answers at path.
 func Dial(path string) (*Client, error) {
 	conn, err := net.DialTimeout("unix", path, 2*time.Second)
 	if err != nil {
 		return nil, fmt.Errorf("herdr is not reachable at %s: %w", path, err)
 	}
-	return &Client{conn: conn, r: bufio.NewReader(conn)}, nil
+	conn.Close()
+	return &Client{path: path}, nil
 }
 
-// Close closes the connection.
-func (c *Client) Close() error { return c.conn.Close() }
+// Close is there for symmetry; a client holds no connection between calls.
+func (c *Client) Close() error { return nil }
 
 // Error is an error herdr answered with.
 type Error struct {
@@ -68,12 +69,18 @@ func (c *Client) Call(method string, params any) (json.RawMessage, error) {
 	if err != nil {
 		return nil, err
 	}
-	_ = c.conn.SetDeadline(time.Now().Add(10 * time.Second))
-	if _, err := c.conn.Write(append(req, '\n')); err != nil {
+	conn, err := net.DialTimeout("unix", c.path, 2*time.Second)
+	if err != nil {
 		return nil, fmt.Errorf("herdr %s: %w", method, err)
 	}
+	defer conn.Close()
+	_ = conn.SetDeadline(time.Now().Add(10 * time.Second))
+	if _, err := conn.Write(append(req, '\n')); err != nil {
+		return nil, fmt.Errorf("herdr %s: %w", method, err)
+	}
+	r := bufio.NewReader(conn)
 	for {
-		line, err := c.r.ReadBytes('\n')
+		line, err := r.ReadBytes('\n')
 		if err != nil {
 			return nil, fmt.Errorf("herdr %s: %w", method, err)
 		}
@@ -125,9 +132,17 @@ func Records(raw json.RawMessage, idKey string) []map[string]any {
 
 // Cwd is the working directory a pane or workspace record reports: the
 // foreground process's when herdr knows it, which follows a `cd` in the pane.
+//
+// A workspace has no cwd of its own; when it is a git checkout, herdr gives
+// the checkout's path as worktree.checkout_path.
 func Cwd(rec map[string]any) string {
 	for _, k := range []string{"foreground_cwd", "cwd"} {
 		if s, ok := rec[k].(string); ok && s != "" {
+			return s
+		}
+	}
+	if wt, ok := rec["worktree"].(map[string]any); ok {
+		if s, ok := wt["checkout_path"].(string); ok && s != "" {
 			return s
 		}
 	}

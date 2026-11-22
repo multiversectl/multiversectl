@@ -95,9 +95,12 @@ func clip(s string, n int) string {
 
 type target struct {
 	method, idKey, id, cwd string
+	workspace              string // a pane's workspace
 }
 
-// Sync labels every herdr pane and workspace with where its directory is.
+// Sync labels every herdr pane and workspace with where its directory is. A
+// workspace that is no checkout of its own takes the place most of its panes
+// are in.
 func (p Plugin) Sync(ctx context.Context) error {
 	c, err := Dial(p.Socket)
 	if err != nil {
@@ -110,7 +113,7 @@ func (p Plugin) Sync(ctx context.Context) error {
 		return err
 	}
 	for _, rec := range Records(panes, "pane_id") {
-		t := target{method: "pane.report_metadata", idKey: "pane_id", id: ID(rec, "pane_id"), cwd: Cwd(rec)}
+		t := target{method: "pane.report_metadata", idKey: "pane_id", id: ID(rec, "pane_id"), cwd: Cwd(rec), workspace: ID(rec, "workspace_id")}
 		if t.cwd == "" {
 			t.cwd = paneCwd(c, t.id)
 		}
@@ -138,24 +141,74 @@ func (p Plugin) Sync(ctx context.Context) error {
 	for _, pl := range places {
 		at[pl.Path] = pl
 	}
-	in := 0
-	for _, t := range targets {
-		var pl Place
-		if t.cwd != "" {
-			if abs, err := filepath.Abs(t.cwd); err == nil {
-				pl = at[abs]
-			}
+	placeOf := func(cwd string) Place {
+		if cwd == "" {
+			return Place{}
 		}
-		if t.idKey == "pane_id" && pl.Universe != "" {
-			in++
+		abs, err := filepath.Abs(cwd)
+		if err != nil {
+			return Place{}
+		}
+		return at[abs]
+	}
+
+	// Where each workspace's panes are, for workspaces with no checkout.
+	votes := map[string]map[Place]int{}
+	for _, t := range targets {
+		if t.idKey != "pane_id" {
+			continue
+		}
+		if pl := placeOf(t.cwd); pl.Multiverse != "" {
+			if votes[t.workspace] == nil {
+				votes[t.workspace] = map[Place]int{}
+			}
+			pl.Path = ""
+			votes[t.workspace][pl]++
+		}
+	}
+
+	in, total := 0, 0
+	for _, t := range targets {
+		pl := placeOf(t.cwd)
+		if t.idKey == "pane_id" {
+			total++
+			if pl.Universe != "" {
+				in++
+			}
+		} else if pl.Multiverse == "" {
+			pl = mostOf(votes[t.id])
 		}
 		params := map[string]any{t.idKey: t.id, "source": Source, "tokens": TokensFor(pl)}
 		if _, err := c.Call(t.method, params); err != nil {
 			return err
 		}
 	}
-	fmt.Fprintf(p.Out, "%d of %d pane(s) in a universe\n", in, len(Records(panes, "pane_id")))
+	fmt.Fprintf(p.Out, "%d of %d pane(s) in a universe\n", in, total)
 	return nil
+}
+
+// mostOf is the place with the most votes; a tie goes to a universe over its
+// multiverse's root, then by name, so the label does not flicker.
+func mostOf(votes map[Place]int) Place {
+	var best Place
+	n := 0
+	for pl, v := range votes {
+		if v > n || v == n && better(pl, best) {
+			best, n = pl, v
+		}
+	}
+	return best
+}
+
+// better breaks a tie between two places.
+func better(a, b Place) bool {
+	if (a.Universe != "") != (b.Universe != "") {
+		return a.Universe != ""
+	}
+	if a.Multiverse != b.Multiverse {
+		return a.Multiverse < b.Multiverse
+	}
+	return a.Universe < b.Universe
 }
 
 func paneCwd(c *Client, id string) string {
@@ -172,22 +225,26 @@ func paneCwd(c *Client, id string) string {
 	return ""
 }
 
-// focusedCwd is the directory of the pane a plugin command was started for:
-// herdr passes the focused pane in HERDR_PLUGIN_CONTEXT_JSON, and its id in
-// HERDR_PANE_ID to everything but a popup.
+// focusedCwd is the directory of the pane a plugin command was started for.
+// herdr's HERDR_PLUGIN_CONTEXT_JSON says it as focused_pane_cwd; the pane's id
+// in HERDR_PANE_ID, which popups do not get, is the fallback.
 func (p Plugin) focusedCwd() string {
-	if raw := os.Getenv("HERDR_PLUGIN_CONTEXT_JSON"); raw != "" {
-		for _, rec := range Records(json.RawMessage(raw), "pane_id") {
-			if cwd := Cwd(rec); cwd != "" {
-				return cwd
-			}
+	var ctx struct {
+		FocusedPaneCwd string `json:"focused_pane_cwd"`
+		WorkspaceCwd   string `json:"workspace_cwd"`
+	}
+	if raw := os.Getenv("HERDR_PLUGIN_CONTEXT_JSON"); raw != "" && json.Unmarshal([]byte(raw), &ctx) == nil {
+		if ctx.FocusedPaneCwd != "" {
+			return ctx.FocusedPaneCwd
+		}
+		if ctx.WorkspaceCwd != "" {
+			return ctx.WorkspaceCwd
 		}
 	}
 	c, err := Dial(p.Socket)
 	if err != nil {
 		return ""
 	}
-	defer c.Close()
 	return paneCwd(c, os.Getenv("HERDR_PANE_ID"))
 }
 

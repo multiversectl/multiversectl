@@ -55,6 +55,7 @@ func (f *fakeHerdr) serve(t *testing.T) string {
 					}
 					b, _ := json.Marshal(msg)
 					_, _ = conn.Write(append(b, '\n'))
+					return // herdr answers one request per connection
 				}
 			}()
 		}
@@ -104,15 +105,22 @@ func TestSyncLabelsPanesInAUniverseAndClearsTheRest(t *testing.T) {
 			map[string]any{"pane_id": "w1:p1", "foreground_cwd": uni + "/api", "cwd": "/elsewhere"},
 			map[string]any{"pane_id": "w1:p2", "cwd": "/tmp"},
 		}},
-		"workspace.list": []any{map[string]any{"workspace_id": "w1", "cwd": uni}},
+		"workspace.list": []any{
+			map[string]any{"workspace_id": "w1", "worktree": map[string]any{"checkout_path": uni}},
+			map[string]any{"workspace_id": "w2", "worktree": nil}, // no checkout: takes its panes' universe
+		},
 	}}
+	f.results["pane.list"].(map[string]any)["panes"] = append(f.results["pane.list"].(map[string]any)["panes"].([]any),
+		map[string]any{"pane_id": "w2:p1", "workspace_id": "w2", "cwd": uni + "/ui"},
+		map[string]any{"pane_id": "w2:p2", "workspace_id": "w2", "cwd": "/tmp"},
+	)
 	var out bytes.Buffer
 	p := Plugin{Multiversectl: fakeMultiversectl(t, uni), Socket: f.serve(t), Out: &out}
 	if err := p.Sync(context.Background()); err != nil {
 		t.Fatal(err)
 	}
 	panes := f.calls("pane.report_metadata")
-	if len(panes) != 2 {
+	if len(panes) != 4 {
 		t.Fatalf("pane reports = %v", panes)
 	}
 	got := panes[0]["tokens"].(map[string]any)
@@ -122,10 +130,14 @@ func TestSyncLabelsPanesInAUniverseAndClearsTheRest(t *testing.T) {
 	if tok := panes[1]["tokens"].(map[string]any); tok["mv_universe"] != nil || len(tok) != len(Tokens) {
 		t.Errorf("a pane in no multiverse clears every token: %v", tok)
 	}
-	if ws := f.calls("workspace.report_metadata"); len(ws) != 1 || ws[0]["tokens"].(map[string]any)["mv_multiverse"] != "acme" {
-		t.Errorf("workspace reports = %v", ws)
+	ws := f.calls("workspace.report_metadata")
+	if len(ws) != 2 || ws[0]["tokens"].(map[string]any)["mv_multiverse"] != "acme" {
+		t.Fatalf("workspace reports = %v", ws)
 	}
-	if !strings.Contains(out.String(), "1 of 2 pane(s)") {
+	if ws[1]["workspace_id"] != "w2" || ws[1]["tokens"].(map[string]any)["mv_universe"] != "fix/login" {
+		t.Errorf("a workspace with no checkout takes its panes' universe: %v", ws[1])
+	}
+	if !strings.Contains(out.String(), "2 of 4 pane(s)") {
 		t.Errorf("out = %q", out.String())
 	}
 }
@@ -148,13 +160,18 @@ func TestCallReturnsHerdrsError(t *testing.T) {
 	}
 	defer ln.Close()
 	go func() {
-		conn, _ := ln.Accept()
-		defer conn.Close()
-		line, _ := bufio.NewReader(conn).ReadBytes('\n')
-		var req map[string]any
-		_ = json.Unmarshal(line, &req)
-		b, _ := json.Marshal(map[string]any{"id": req["id"], "error": map[string]any{"code": "not_found", "message": "no pane w9:p9"}})
-		_, _ = conn.Write(append(b, '\n'))
+		for {
+			conn, err := ln.Accept()
+			if err != nil {
+				return
+			}
+			line, _ := bufio.NewReader(conn).ReadBytes('\n')
+			var req map[string]any
+			_ = json.Unmarshal(line, &req)
+			b, _ := json.Marshal(map[string]any{"id": req["id"], "error": map[string]any{"code": "not_found", "message": "no pane w9:p9"}})
+			_, _ = conn.Write(append(b, '\n'))
+			conn.Close()
+		}
 	}()
 	c, err := Dial(path)
 	if err != nil {
@@ -172,4 +189,24 @@ func asError(err error, target **Error) bool {
 	e, ok := err.(*Error)
 	*target = e
 	return ok
+}
+
+func TestMostOfPrefersAUniverseOnATie(t *testing.T) {
+	root := Place{Multiverse: "acme"}
+	uni := Place{Multiverse: "acme", Universe: "fix/login"}
+	for i := 0; i < 20; i++ { // map order is random
+		if got := mostOf(map[Place]int{root: 1, uni: 1}); got != uni {
+			t.Fatalf("tie went to %+v", got)
+		}
+	}
+	if got := mostOf(map[Place]int{root: 2, uni: 1}); got != root {
+		t.Errorf("more votes win: %+v", got)
+	}
+}
+
+func TestFocusedCwdReadsHerdrsContext(t *testing.T) {
+	t.Setenv("HERDR_PLUGIN_CONTEXT_JSON", `{"focused_pane_id":"w1:p1","focused_pane_cwd":"/a/b","workspace_cwd":"/a"}`)
+	if got := (Plugin{Socket: "/nonexistent"}).focusedCwd(); got != "/a/b" {
+		t.Errorf("focusedCwd = %q", got)
+	}
 }
