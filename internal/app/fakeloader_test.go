@@ -3,7 +3,7 @@ package app_test
 import (
 	"errors"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 type fakeLoader map[string]*domain.Manifest

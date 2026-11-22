@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/lockfile"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/lockfile"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 func TestOneAtATime(t *testing.T) {

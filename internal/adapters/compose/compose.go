@@ -18,8 +18,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/trace"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/trace"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 const (

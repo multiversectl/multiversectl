@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/fsx"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/fsx"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // fakeReleases serves the named assets and publishes a checksums.txt over

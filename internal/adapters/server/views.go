@@ -3,8 +3,8 @@ package server
 import (
 	"os"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // The JSON the UI reads. These are written for the page, not borrowed from the

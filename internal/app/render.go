@@ -14,7 +14,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // excludeMu serialises edits of git's exclude file. For a linked worktree git

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // The manifest a universe was started with is kept beside its state, and goes with it.

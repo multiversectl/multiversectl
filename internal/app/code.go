@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // CodeStatus is what has become of one repository inside a universe: the

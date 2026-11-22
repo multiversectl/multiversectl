@@ -6,7 +6,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // ContainerRow is one container of a universe, filed under the app and service

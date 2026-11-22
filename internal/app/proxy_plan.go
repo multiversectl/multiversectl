@@ -8,7 +8,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // servedMultiverse is a multiverse that has containers running, which is what

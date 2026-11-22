@@ -18,7 +18,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // poll is how often a waiting process tries again. flock can block instead,

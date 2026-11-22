@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // An operation is one thing the page asked the server to do: start a universe,

@@ -9,8 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // Globals are the flags every command accepts.

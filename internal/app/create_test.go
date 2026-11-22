@@ -10,11 +10,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/fsx"
-	"github.com/cristiansteib/multiversectl/internal/adapters/gitcli"
-	"github.com/cristiansteib/multiversectl/internal/adapters/statestore"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/fsx"
+	"github.com/multiversectl/multiversectl/internal/adapters/gitcli"
+	"github.com/multiversectl/multiversectl/internal/adapters/statestore"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // These tests run against real git: whether a branch really exists, and

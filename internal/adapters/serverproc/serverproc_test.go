@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // fakeServer stands in for multiversectl-server: it says where it serves, as

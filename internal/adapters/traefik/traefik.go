@@ -19,10 +19,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/trace"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/trace"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // proxyProject is the shared proxy's compose project. Relocating the state

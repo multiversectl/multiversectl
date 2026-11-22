@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 type Host struct {

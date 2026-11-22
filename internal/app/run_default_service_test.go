@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 type idSystem struct{ System }

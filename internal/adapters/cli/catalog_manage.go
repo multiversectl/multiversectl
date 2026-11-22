@@ -5,7 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
 	"io"
 	"os"
 	"strings"
@@ -14,8 +14,8 @@ import (
 	"github.com/charmbracelet/x/term"
 	"github.com/spf13/cobra"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // catalogManageCmd is the catalog on one screen, for a person at a terminal: the

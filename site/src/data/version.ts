@@ -4,7 +4,7 @@
 // "v0.0.95-2-gabc1234" for a build from commits after it. A build without it,
 // on a laptop, is "dev".
 
-const repo = 'https://github.com/cristiansteib/multiversectl';
+const repo = 'https://github.com/multiversectl/multiversectl';
 
 export interface SiteVersion {
   /** What the top bar shows: "v0.0.96", "v0.0.95+2" or "dev". */

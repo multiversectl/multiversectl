@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // StartInput names the universe, the apps to start (all runnable ones when

@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 const (
 	// checksumsAsset is what the release pipeline publishes the digests as.
 	checksumsAsset = "checksums.txt"
-	releasesPage   = "https://github.com/cristiansteib/multiversectl/releases"
+	releasesPage   = "https://github.com/multiversectl/multiversectl/releases"
 	sha256Hex      = 64
 )
 

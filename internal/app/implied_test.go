@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/manifest"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/manifest"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // A repository with compose files and no multiverse.yaml is a multiverse of one:

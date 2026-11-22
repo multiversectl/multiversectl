@@ -3,12 +3,12 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
 	"strings"
 
 	"github.com/spf13/cobra"
 
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 // catalogNewCmd makes one more entry for the catalog and lists it: a
@@ -147,7 +147,7 @@ func (r runner) summarize(res app.ProjectResult) {
 	if res.Node != "" {
 		r.out.Info("listed in the root catalog as `%s`; check with `multiversectl catalog ls --json`", res.Node)
 	}
-	r.out.Info("next: multiverse.yaml only lists the repositories. A repository with a compose file runs as an app of its own name; to give an app its hosts (addresses), secrets or services, add `spec.apps` to it, commit, push and run `multiversectl catalog sync` (reference: https://multiversectl.dev/reference/manifest.html)")
+	r.out.Info("next: multiverse.yaml only lists the repositories. A repository with a compose file runs as an app of its own name; to give an app its hosts (addresses), secrets or services, add `spec.apps` to it, commit, push and run `multiversectl catalog sync` (reference: https://multiversectl.dev/docs/reference/manifest/)")
 }
 
 // offerInstall is the guide's last step: put the multiverse on this machine, so

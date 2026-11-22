@@ -8,7 +8,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // InstallOptions say where multiverses go and how to read the arguments.

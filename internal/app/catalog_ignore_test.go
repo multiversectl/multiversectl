@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/catalog"
-	"github.com/cristiansteib/multiversectl/internal/adapters/fsx"
-	"github.com/cristiansteib/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/adapters/catalog"
+	"github.com/multiversectl/multiversectl/internal/adapters/fsx"
+	"github.com/multiversectl/multiversectl/internal/app"
 )
 
 func ignoringCatalogs(t *testing.T, ignored ...string) (*app.Catalogs, *memConfig, *fakeRepos, string) {

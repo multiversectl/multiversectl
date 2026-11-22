@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 // ProjectInput describes a new multiverse: the repositories it is made of, and

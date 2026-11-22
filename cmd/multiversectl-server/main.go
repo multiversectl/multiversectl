@@ -15,10 +15,10 @@ import (
 	"runtime"
 	"syscall"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/server"
-	"github.com/cristiansteib/multiversectl/internal/adapters/userdirs"
-	"github.com/cristiansteib/multiversectl/internal/app"
-	"github.com/cristiansteib/multiversectl/internal/wire"
+	"github.com/multiversectl/multiversectl/internal/adapters/server"
+	"github.com/multiversectl/multiversectl/internal/adapters/userdirs"
+	"github.com/multiversectl/multiversectl/internal/app"
+	"github.com/multiversectl/multiversectl/internal/wire"
 )
 
 var (

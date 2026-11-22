@@ -11,8 +11,8 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/cristiansteib/multiversectl/internal/adapters/manifest/v1alpha1"
-	"github.com/cristiansteib/multiversectl/internal/domain"
+	"github.com/multiversectl/multiversectl/internal/adapters/manifest/v1alpha1"
+	"github.com/multiversectl/multiversectl/internal/domain"
 )
 
 var fileNames = []string{"multiverse.yaml", "multiverse.yml"}
