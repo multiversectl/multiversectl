@@ -57,7 +57,13 @@ func (r runner) reportPreflight(checks []app.Check, all bool) error {
 }
 
 // IsSilent reports errors main should turn into an exit code without printing.
-func IsSilent(err error) bool { return errors.Is(err, errChecksFailed) }
+func IsSilent(err error) bool {
+	return errors.Is(err, errChecksFailed) || errors.Is(err, errNotInMultiverse)
+}
+
+// errNotInMultiverse is `universe which` on a directory in no multiverse: it
+// has said so, and exits 1 so a script can test for it.
+var errNotInMultiverse = errors.New("not in a multiverse")
 
 func (r runner) envCmd() *cobra.Command {
 	return &cobra.Command{
