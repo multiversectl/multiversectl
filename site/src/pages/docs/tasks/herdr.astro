@@ -1,0 +1,84 @@
+---
+import Page from '../../../layouts/Page.astro';
+import Terminal from '../../../components/Terminal.astro';
+import Note from '../../../components/Note.astro';
+---
+
+<Page path="tasks/herdr">
+<section id="hw-herdr">
+  <h2 id="hw-herdr"><a href="#hw-herdr">Universes in herdr</a></h2>
+  <p><a href="https://herdr.dev">herdr</a> runs coding agents side by side, each in a terminal, grouped into spaces. With multiversectl, a universe becomes a space: opening one starts a terminal in the universe's folder, the parent of every repository's checkout, and each repository gets a terminal of its own when you ask for it. Several agents then work in several universes at once, and you can see which is in which.</p>
+  <p>herdr comes as two programs, and multiversectl has a piece for each, both in <a href="https://github.com/multiversectl/herdr-plugin">multiversectl/herdr-plugin</a>:</p>
+  <div class="tw"><table>
+    <thead><tr><th scope="col">herdr</th><th scope="col">What you get</th><th scope="col">From</th></tr></thead><tbody>
+    <tr><td data-l="herdr">The desktop app</td><td data-l="What you get">A <em>Universes</em> side panel, <em>Open universe…</em> in the + menu, and <kbd>Alt</kbd>+<kbd>U</kbd> for a picker</td><td data-l="From">a layout, in <code>app/</code></td></tr>
+    <tr><td data-l="herdr">The terminal (<code>herdr</code>)</td><td data-l="What you get">Sidebar labels on every pane and workspace, a picker that opens a universe, a status popup</td><td data-l="From">a plugin, at the repository's root</td></tr>
+  </tbody></table></div>
+  <p>Both read everything through the command line (<code>multiversectl status</code>, <code>universe ls</code>, <code>universe which</code>, each with <code>-o json</code>), so they need <code>multiversectl</code> on your <code>PATH</code> and nothing else.</p>
+</section>
+
+<section id="hw-app">
+  <h2 id="hw-app"><a href="#hw-app">The desktop app</a></h2>
+  <p>The <em>Universes</em> button sits in the tab bar beside <em>Files</em> and <em>Changes</em>, and opens a side panel:</p>
+  <ul class="t">
+    <li><strong>Every universe</strong>, grouped by multiverse, with its state (● running, ◐ partial, ○ stopped) and how many services are up. Clicking one opens it as a space named after it, with one terminal in the universe's folder; a universe that already has its space is shown instead.</li>
+    <li><strong>The universe you are in</strong>, inside its space: its state, <em>Up</em>, <em>Down</em> and <em>Sync</em> (the <code>universe</code> commands of the same names, with a notification when they finish), and <em>Doctor</em>, which runs <code>universe doctor</code> in a tab of its own.</li>
+    <li><strong>Terminals</strong>: the universe's own, then one per repository, each with a terminal icon. One that is not open yet has a <code>+</code> and opens a terminal in that repository's checkout; one that is open goes to it.</li>
+    <li><strong>Addresses</strong>: the universe's URLs, each opening in the browser.</li>
+    <li><strong>Web view</strong>: <code>multiversectl server open</code>, the <a href="/docs/tasks/server/">web view</a>, started when it is not running.</li>
+  </ul>
+  <p>To add it, ask the agent in your herdr app to add the layout from <code>app/</code> in multiversectl/herdr-plugin (it follows <code>app/RECIPE.md</code>), or copy it yourself:</p>
+  <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">git clone https://github.com/multiversectl/herdr-plugin</span>
+<span class="p">$ </span><span class="in">cp herdr-plugin/app/layouts/multiverse.json ~/.config/herdr-app/layouts/</span>
+<span class="p">$ </span><span class="in">cp -R herdr-plugin/app/mods/* ~/.config/herdr-app/mods/</span>
+<span class="p">$ </span><span class="in">herdr-app do layout.switch '&#123;"name":"multiverse"&#125;'</span></pre></Terminal>
+  <p>Add <code>"alt-u": "mod.open:multiverse"</code> under <code>"global"</code> in <code>~/.config/herdr-app/keys.json</code> for the picker.</p>
+  <Note><p><strong>It is a copy of herdr's main layout.</strong> herdr's own layouts and its tab bar cannot be edited, so the layout carries copies of the tab bar and the + menu with one button and one entry added. They do not change when herdr updates its own; <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> switches back to herdr's.</p></Note>
+</section>
+
+<section id="hw-terminal">
+  <h2 id="hw-terminal"><a href="#hw-terminal">The terminal</a></h2>
+  <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">herdr plugin install multiversectl/herdr-plugin</span></pre></Terminal>
+  <p>Installing fetches <code>multiversectl-herdr</code>, a small program that comes with each multiversectl release, and checks it against the release's checksums; one already on your <code>PATH</code> is used instead. It does the plugin's work and talks to multiversectl only through <code>universe which -o json</code>.</p>
+  <ul class="t">
+    <li><strong>Open a universe</strong>: the <code>multiversectl.open</code> action shows a picker; the universe chosen opens as a workspace named after it, with a terminal in its folder. <code>multiversectl.open-all</code> opens every one.</li>
+    <li><strong>Labels</strong>: on startup, and whenever a pane takes focus, starts an agent or a workspace changes, every pane and workspace is labelled with where its directory is. A workspace that is no checkout takes the universe most of its panes are in.</li>
+    <li><strong>Status</strong>: the <code>multiversectl.status</code> action shows the focused pane's universe and <code>multiversectl status</code> in a popup.</li>
+  </ul>
+  <p>Plugins cannot change herdr's layout, so bind the actions and show the labels in <code>~/.config/herdr/config.toml</code>:</p>
+  <Terminal kind="file"><pre><span class="k">[ui.sidebar.agents]</span>
+rows = [["state_icon", "machine", "workspace", "tab"], ["agent", "$mv_repo", "$mv_up"]]
+
+<span class="k">[ui.sidebar.spaces]</span>
+rows = [["state_icon", "workspace"], ["$mv_state", "$mv_up"]]
+
+<span class="k">[[keys.command]]</span>
+key = "prefix+o"
+type = "plugin_action"
+command = "multiversectl.open"
+
+<span class="k">[[keys.command]]</span>
+key = "prefix+u"
+type = "plugin_action"
+command = "multiversectl.status"</pre></Terminal>
+  <div class="tw"><table>
+    <thead><tr><th scope="col">Label</th><th scope="col">Value</th></tr></thead><tbody>
+    <tr><td data-l="Label"><code>$mv_universe</code></td><td data-l="Value">the universe's name, or <code>root</code> in the multiverse's own checkouts</td></tr>
+    <tr><td data-l="Label"><code>$mv_multiverse</code></td><td data-l="Value">the multiverse's name</td></tr>
+    <tr><td data-l="Label"><code>$mv_repo</code></td><td data-l="Value">the repository a pane is in</td></tr>
+    <tr><td data-l="Label"><code>$mv_state</code></td><td data-l="Value"><code>running</code>, <code>partial</code>, <code>stopped</code> or <code>created</code></td></tr>
+    <tr><td data-l="Label"><code>$mv_up</code></td><td data-l="Value">services up, e.g. <code>6/9</code></td></tr>
+  </tbody></table></div>
+  <p class="muted">The plugin's releases are tagged, so <code>herdr plugin install multiversectl/herdr-plugin --ref v0.0.1</code> pins one.</p>
+</section>
+
+<section id="hw-which">
+  <h2 id="hw-which"><a href="#hw-which">For any other terminal</a></h2>
+  <p>Both are built on one command, which any prompt, status bar or terminal multiplexer can use the same way: it says where a directory is.</p>
+  <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">multiversectl universe which ~/multiverse/acme/universes/fix-login/api /tmp -o json</span>
+[&#123;"path":"/home/me/multiverse/acme/universes/fix-login/api","multiverse":"acme","root":"/home/me/multiverse/acme",
+  "universe":"fix/login","state":"running","up":"3/3","branch":"fix/login","dir":"/home/me/multiverse/acme/universes/fix-login"&#125;,
+ &#123;"path":"/tmp"&#125;]</pre></Terminal>
+  <p>One entry per path, in the order given; a path in no multiverse has only its <code>path</code>, and the command exits 1 when none is in one.</p>
+</section>
+</Page>

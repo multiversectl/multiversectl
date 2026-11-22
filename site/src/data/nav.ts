@@ -172,6 +172,13 @@ export const groups: NavGroup[] = [
         summary: "A live web view of the catalog, the multiverses and the fleet of universes, with versions and buttons to start, stop, create and remove universes, behind a token.",
         description: "The web view: a live page of your catalog, multiverses and every universe, with buttons to start, stop, create and remove them, behind a token.",
       },
+      {
+        path: "tasks/herdr",
+        title: "Work in universes from herdr",
+        nav: "Use with herdr",
+        summary: "Open each universe as a herdr space with a terminal in its folder, see which universe every agent works in, and start, stop and check it from a side panel.",
+        description: "Open each universe as a herdr space, see which universe every agent works in, and start, stop and check it from a side panel, in the herdr app or terminal.",
+      },
     ],
   },
   {
