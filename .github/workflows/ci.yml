@@ -48,6 +48,8 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: web/package-lock.json
+      - name: The gems match web/tools/gems.mjs
+        run: node web/tools/gems.mjs && test -z "$(git status --porcelain -- web/public/gems)"
       - run: npm ci
         working-directory: web
       - run: npx ng build

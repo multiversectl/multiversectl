@@ -89,8 +89,11 @@ type fleetMultiverse struct {
 	Name      string         `json:"name"`
 	Root      string         `json:"root"`
 	Universes []universeView `json:"universes"`
-	Error     string         `json:"error,omitempty"`
-	Warnings  []string       `json:"warnings,omitempty"`
+	// Repos are the multiverse's repositories, sorted: a repository's place in
+	// it is its gem's colour, the same in every universe.
+	Repos    []string `json:"repos,omitempty"`
+	Error    string   `json:"error,omitempty"`
+	Warnings []string `json:"warnings,omitempty"`
 }
 
 type universeView struct {

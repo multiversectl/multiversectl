@@ -38,7 +38,7 @@
           @for (r of repos(); track r.c.path) {
             <li class="repo-row">
               <span class="who">
-                <mv-repo-chip [loc]="r.loc" [name]="r.c.repo" />
+                <mv-repo-chip [loc]="r.loc" [name]="r.c.repo" [gem]="store.gem(r.c.repo)" />
                 @if (r.c.branch) { <mv-repo-chip [loc]="r.loc" [name]="r.c.repo" [branch]="r.c.branch" /> }
               </span>
               <span class="state">

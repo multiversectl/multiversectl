@@ -5,7 +5,7 @@ import { Ops } from '../../core/ops.service';
 import { ago, isHttpUrl } from '../../core/util';
 import { Badge } from '../../shared/ui/badge';
 import { EmptyState } from '../../shared/ui/empty-state';
-import { Gem } from '../../shared/ui/gem';
+import { Ring } from '../../shared/ui/gem';
 import { Icon } from '../../shared/ui/icon';
 import { Skeleton } from '../../shared/ui/skeleton';
 import { Drawer } from '../../shared/ui/drawer';
@@ -17,7 +17,7 @@ import { UniverseStore } from './universe.store';
 /** One universe: its number, whether it runs, what can be done to it, and its tabs. */
 @Component({
   selector: 'mv-universe-page',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, Badge, Icon, Gem, EmptyState, Skeleton, UniverseAside, Drawer, PrIcon, RemoveUniversePopover],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, Badge, Icon, Ring, EmptyState, Skeleton, UniverseAside, Drawer, PrIcon, RemoveUniversePopover],
   providers: [UniverseStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './universe-page.html',

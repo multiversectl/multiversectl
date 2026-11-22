@@ -17,7 +17,7 @@
             <h3>
               {{ x.app.key }}
               <span class="chips">
-                @if (x.app.repo) { <mv-repo-chip [loc]="x.loc" [name]="x.app.repo" /> }
+                @if (x.app.repo) { <mv-repo-chip [loc]="x.loc" [name]="x.app.repo" [gem]="store.gem(x.app.repo)" /> }
                 @if (x.branch) { <mv-repo-chip [loc]="x.loc" [name]="x.app.repo" [branch]="x.branch" /> }
                 @if (x.code) { <mv-pr-chip [review]="x.code.review" [error]="x.code.reviewError" [stat]="x.code.change" [base]="x.code.base" [landed]="!!x.code.landed" /> }
                 @if (x.code?.landed) { <mv-badge tone="info" [hint]="landedHint(x.code!)">landed</mv-badge> }

@@ -1,3 +1,4 @@
+import { gemOf } from '../../shared/ui/gem';
 import { DestroyRef, Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Api } from '../../core/api.service';
@@ -24,6 +25,12 @@ export class UniverseStore {
   readonly loaded = computed(() => this.events.fleet() !== null);
   private readonly mv = computed(() => this.events.fleet()?.multiverses.find((m) => m.name === this.multiverse()));
   readonly universe = computed(() => this.mv()?.universes.find((u) => u.name === this.name()));
+  /** The multiverse's repositories, whose order gives each its gem. */
+  readonly repos = computed(() => this.mv()?.repos ?? []);
+  /** Each of the universe's repositories' gems, for its ring. */
+  readonly ring = computed(() => (this.universe()?.checkouts ?? []).map((c) => gemOf(this.repos(), c.repo)).filter(Boolean));
+  /** A repository's gem colour, '' when the multiverse's list is not known. */
+  gem(repo: string): string { return gemOf(this.repos(), repo); }
   readonly expected = computed(() => this.universe()?.apps.reduce((n, a) => n + a.expected, 0) ?? 0);
   readonly query = computed(() => ({ multiverse: this.multiverse(), universe: this.name() }));
 
