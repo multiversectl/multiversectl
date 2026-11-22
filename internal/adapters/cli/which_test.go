@@ -42,3 +42,30 @@ func TestLocateFindsTheDeepestPlace(t *testing.T) {
 		t.Errorf("a universe's place carries its state: %+v", got)
 	}
 }
+
+// On macOS /var is a link to /private/var: a path that does not exist yet,
+// reached through the link, is still in the multiverse it names.
+func TestLocateResolvesTheLinkAboveAPathNotMadeYet(t *testing.T) {
+	real := t.TempDir()
+	uni := filepath.Join(real, "universes", "fix-login")
+	if err := os.MkdirAll(uni, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	link := filepath.Join(t.TempDir(), "var")
+	if err := os.Symlink(real, link); err != nil {
+		t.Fatal(err)
+	}
+	st := statusReport{Multiverses: []multiverseStatus{{
+		Name: "acme", Root: real,
+		Universes: []universeStatus{{Name: "fix/login", Dir: uni}},
+	}}}
+	if got := locate(st, filepath.Join(link, "universes", "fix-login", "api", "src")); got.Universe != "fix/login" {
+		t.Errorf("through the link, not made yet: %+v", got)
+	}
+	// And the other way round: the multiverse recorded through the link.
+	st.Multiverses[0].Root = link
+	st.Multiverses[0].Universes[0].Dir = filepath.Join(link, "universes", "fix-login")
+	if got := locate(st, filepath.Join(uni, "web")); got.Universe != "fix/login" {
+		t.Errorf("recorded through the link: %+v", got)
+	}
+}

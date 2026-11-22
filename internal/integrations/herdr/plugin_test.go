@@ -23,7 +23,7 @@ type fakeHerdr struct {
 
 func (f *fakeHerdr) serve(t *testing.T) string {
 	t.Helper()
-	path := filepath.Join(t.TempDir(), "herdr.sock")
+	path := filepath.Join(shortTempDir(t), "herdr.sock")
 	ln, err := net.Listen("unix", path)
 	if err != nil {
 		t.Fatal(err)
@@ -61,6 +61,18 @@ func (f *fakeHerdr) serve(t *testing.T) string {
 		}
 	}()
 	return path
+}
+
+// shortTempDir is a temporary directory with a short path: a Unix socket's
+// path is limited to 104 bytes on macOS, and t.TempDir() there is longer.
+func shortTempDir(t *testing.T) string {
+	t.Helper()
+	dir, err := os.MkdirTemp("/tmp", "mvh")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { os.RemoveAll(dir) })
+	return dir
 }
 
 func (f *fakeHerdr) calls(method string) []map[string]any {
@@ -153,7 +165,7 @@ func TestTokensForTheMultiverseRootSayRoot(t *testing.T) {
 }
 
 func TestCallReturnsHerdrsError(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "h.sock")
+	path := filepath.Join(shortTempDir(t), "h.sock")
 	ln, err := net.Listen("unix", path)
 	if err != nil {
 		t.Fatal(err)

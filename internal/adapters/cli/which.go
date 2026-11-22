@@ -52,8 +52,10 @@ func within(path, dir string) bool {
 	return path == dir || strings.HasPrefix(path, dir+string(filepath.Separator))
 }
 
-// realPath resolves links, so a path reached through a symlink still matches;
-// a path that does not exist (any more) is compared as written.
+// realPath resolves links, so a path reached through a symlink still matches.
+// A path that does not exist (yet, or any more) has its deepest existing
+// parent resolved and the rest kept as written: on macOS /var is /private/var,
+// and a folder not made yet must still compare equal to its multiverse.
 func realPath(p string) string {
 	if p == "" {
 		return ""
@@ -61,10 +63,17 @@ func realPath(p string) string {
 	if abs, err := filepath.Abs(p); err == nil {
 		p = abs
 	}
-	if r, err := filepath.EvalSymlinks(p); err == nil {
-		return r
+	p = filepath.Clean(p)
+	rest := ""
+	for dir := p; ; dir = filepath.Dir(dir) {
+		if r, err := filepath.EvalSymlinks(dir); err == nil {
+			return filepath.Join(r, rest)
+		}
+		if parent := filepath.Dir(dir); parent == dir {
+			return p
+		}
+		rest = filepath.Join(filepath.Base(dir), rest)
 	}
-	return filepath.Clean(p)
 }
 
 func (r runner) whichCmd() *cobra.Command {
