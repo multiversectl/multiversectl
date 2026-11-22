@@ -11,10 +11,10 @@ import Note from '../../../components/Note.astro';
   <p>herdr comes as two programs, and multiversectl has a piece for each, both in <a href="https://github.com/multiversectl/herdr-plugin">multiversectl/herdr-plugin</a>:</p>
   <div class="tw"><table>
     <thead><tr><th scope="col">herdr</th><th scope="col">What you get</th><th scope="col">From</th></tr></thead><tbody>
-    <tr><td data-l="herdr">The desktop app</td><td data-l="What you get">A <em>Universes</em> side panel, <em>Open universe…</em> in the + menu, and <kbd>Alt</kbd>+<kbd>U</kbd> for a picker</td><td data-l="From">a layout, in <code>app/</code></td></tr>
-    <tr><td data-l="herdr">The terminal (<code>herdr</code>)</td><td data-l="What you get">Sidebar labels on every pane and workspace, a picker that opens a universe, a status popup</td><td data-l="From">a plugin, at the repository's root</td></tr>
+    <tr><td data-l="herdr">The desktop app</td><td data-l="What you get">A <em>Universes</em> side panel, <em>Open universe…</em> in the + menu, and <kbd>Alt</kbd>+<kbd>U</kbd> for a picker</td><td data-l="From">a layout, in <code>multiverse/</code>, also on <a href="https://herdr.dev/layouts/">herdr.dev/layouts</a></td></tr>
+    <tr><td data-l="herdr">The terminal (<code>herdr</code>)</td><td data-l="What you get">Sidebar labels on every pane and workspace, a picker that opens a universe, a status popup</td><td data-l="From">a plugin, at the repository's root, also on <a href="https://herdr.dev/plugins/">herdr.dev/plugins</a></td></tr>
   </tbody></table></div>
-  <p>Both read everything through the command line (<code>multiversectl status</code>, <code>universe ls</code>, <code>universe which</code>, each with <code>-o json</code>), so they need <code>multiversectl</code> on your <code>PATH</code> and nothing else.</p>
+  <p>Both run on Linux and macOS, not on Windows, where multiversectl has no build of its own (inside WSL it is Linux). Both read everything through the command line (<code>multiversectl status</code>, <code>universe ls</code>, <code>universe which</code>, each with <code>-o json</code>), so they need <code>multiversectl</code> on your <code>PATH</code> and nothing else.</p>
 </section>
 
 <section id="hw-app">
@@ -27,10 +27,10 @@ import Note from '../../../components/Note.astro';
     <li><strong>Addresses</strong>: the universe's URLs, each opening in the browser.</li>
     <li><strong>Web view</strong>: <code>multiversectl server open</code>, the <a href="/docs/tasks/server/">web view</a>, started when it is not running.</li>
   </ul>
-  <p>To add it, ask the agent in your herdr app to add the layout from <code>app/</code> in multiversectl/herdr-plugin (it follows <code>app/RECIPE.md</code>), or copy it yourself:</p>
+  <p>To add it, ask the agent in your herdr app to add the layout from <code>multiverse/</code> in multiversectl/herdr-plugin (it follows <code>multiverse/RECIPE.md</code>), or copy it yourself:</p>
   <Terminal kind="shell"><pre><span class="p">$ </span><span class="in">git clone https://github.com/multiversectl/herdr-plugin</span>
-<span class="p">$ </span><span class="in">cp herdr-plugin/app/layouts/multiverse.json ~/.config/herdr-app/layouts/</span>
-<span class="p">$ </span><span class="in">cp -R herdr-plugin/app/mods/* ~/.config/herdr-app/mods/</span>
+<span class="p">$ </span><span class="in">cp herdr-plugin/multiverse/layouts/multiverse.json ~/.config/herdr-app/layouts/</span>
+<span class="p">$ </span><span class="in">cp -R herdr-plugin/multiverse/mods/* ~/.config/herdr-app/mods/</span>
 <span class="p">$ </span><span class="in">herdr-app do layout.switch '&#123;"name":"multiverse"&#125;'</span></pre></Terminal>
   <p>Add <code>"alt-u": "mod.open:multiverse"</code> under <code>"global"</code> in <code>~/.config/herdr-app/keys.json</code> for the picker.</p>
   <Note><p><strong>It is a copy of herdr's main layout.</strong> herdr's own layouts and its tab bar cannot be edited, so the layout carries copies of the tab bar and the + menu with one button and one entry added. They do not change when herdr updates its own; <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd> switches back to herdr's.</p></Note>
